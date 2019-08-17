@@ -111,10 +111,78 @@ public class planeaccident {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
             //循环所有数据
             for(String data:alldata){
-                String[] strs = data.split(".");
+                String[] strs = data.split(",");
                 if(strs[0]!=null){
-                }}
+                try {
+                Date date = sdf.parse(strs[0]);
+                //获取年份
+                int year = date.getYear();
+                //判断是否存在记录
+                if(map.containsKey(year)){
+                        //已存在记录，+1
+                        map.put(year, map.get(year)+1);
+                }else{
+                map.put(year,1 );
+                }
+                }catch (Exception e){
+                // TODO Auto-generated catch block}
+                }
          }
-     Set<Integer> keyset = map.keySet();o
-     Set<Integer> keyset = map.keySet();r
-     Set<Integer> keyset = map.keySet();
+         }
+         //记录事故次数最多的年份
+         int max_year = 0;
+         //该事故发生次数
+         int acc_count = 0;
+         //循环所有数据，获取事故次数最多的年份
+         Set<Integer> keyset = map.keySet();
+         for(int year:keyset){
+                if(map.get(year)>acc_count){
+                max_year = year;
+                acc_count = map.get(year);
+                }
+          }
+          //输出结果
+          System.out.println("事故次数最多的年份"+(max_year+1901)+" 该年事故发生次数："+acc_count);
+  }
+  /**
+   * FrequencyPeriod()
+   * 各个时间段发生事故的次数
+   * /
+   public static void FrequencyPeriod(){
+        //key为时间段, value为发生事故次数
+        Map<String, Integer> map = new HashMap<>();
+        //String数组存放时间短
+        String[] strsTime={"上午（6:00～12:00）","下午(12:00~18:00)","晚上(18:00~24:00)","凌晨(0:00～6:00)"}；
+        //小时：分钟
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        
+        for(String data:alldata){
+                String[] strs = data.split(",");
+                //判断时间是否记录，未记录则忽略
+                if(strs[1]!=null){
+                try{
+                Date date = sdf.parse(strs[1]);
+                //取得小时数
+                int hour = date.getHours();
+                //判断小时数在哪个范围中
+                int index = 0;
+                if(hour>=12&&hour<18){
+                index =1 ;}
+                else if (hour>=18){
+                        index = 2;
+                }
+                else if (hour<6){
+                index = 3;}
+                //记录到map中
+                if(map.containsKey(strsTime[index])){
+                        map.put(strsTime[index], map.get(strsTime[index])+1);
+                }else{
+                map.put(strsTime[index], map.get(strsTime[index])+1);
+                
+                }else{
+                map.put(strsTime[index],1);
+                }
+                }catch(ParseException e){}
+                }
+        }
+   }
